@@ -1,5 +1,5 @@
-Flask==2.0.1
+flask==2.2.5
 Flask-SQLAlchemy==2.5.1
 Flask-JWT-Extended==4.3.1
 python-dotenv==0.19.1
-Werkzeug==1.0.1
+werkzeug==2.2.3

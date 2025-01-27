@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from . import main
 from ..models.log import Log
-from ..models import db
+from app import db
 
 @main.route('/api/logs', methods=['POST'])
 def create_log():

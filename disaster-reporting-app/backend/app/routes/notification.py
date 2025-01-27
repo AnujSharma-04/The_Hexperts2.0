@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from . import main
 from ..models.notification import Notification
-from ..models import db
+from app import db
 
 @main.route('/api/notifications', methods=['POST'])
 def create_notification():
