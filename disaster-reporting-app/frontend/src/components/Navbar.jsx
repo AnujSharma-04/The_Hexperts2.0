@@ -31,20 +31,20 @@ const Navbar = () => {
               Insights
             </Link>
             <Link 
-              to="/about-us" 
+              to="/about" 
               className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
             >
               About Us
             </Link>
             <Link 
-              to="/contact-us" 
+              to="/contact" 
               className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium"
             >
               Contact Us
             </Link>
             <Link 
               to="/login" 
-              className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium"
+              className="bg-[#023E8A] text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium"
             >
               Login
             </Link>
