@@ -1,5 +1,5 @@
 # app/models/log.py
-from app import db  # Import db directly from app
+from app.app__init__ import db  # Use the new module name
 from datetime import datetime
 
 class Log(db.Model):

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from ..models.user import User
-from app import db
+from app.app__init__ import db  # Use the new module name
 from flask_jwt_extended import create_access_token
 
 # Define the blueprint
@@ -68,7 +68,7 @@ def login():
         return jsonify({"message": "Invalid credentials!"}), 401
 
     # If login is successful, generate a JWT token
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
 
     # Return the token to the user
     return jsonify({"access_token": access_token}), 200

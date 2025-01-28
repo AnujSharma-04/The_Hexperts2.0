@@ -1,4 +1,4 @@
-# app/__init__.py
+# app/app_init.py
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -24,9 +24,10 @@ def create_app(config_object='app.config.Config'):
     from app.routes.auth import auth_bp
     app.register_blueprint(auth_bp)
     
-    # Import models after db initialization to avoid circular import
-    from app.models.user import User
-    from app.models.disaster import Disaster
-    from app.models.log import Log
+    from app.routes.disaster import disaster_bp
+    app.register_blueprint(disaster_bp)  # Example of disaster blueprint registration
+
+    from app.routes.notification import notification_bp
+    app.register_blueprint(notification_bp)
 
     return app
