@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import AuthorityDashboard from "./pages/AuthorityDashboard";
+import AuthorityProfile from "./pages/AuthorityProfile";
+import UserDashboard from "./pages/UserDashboard";
 import Home from "./pages/Home";
 import ContactUs from "./pages/ContactUs";
 import AboutUs from "./pages/AboutUs";
@@ -20,6 +23,9 @@ function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/authoritydashboard" element={<AuthorityDashboard />} />
+            <Route path="/authorityprofile" element={<AuthorityProfile />} />
+            <Route path="/userdashboard" element={<UserDashboard />} />
           </Routes>
         </main>
         <Footer />

@@ -11,7 +11,7 @@ const Home = () => {
   return (
     <div className="container mx-auto px-4">
       {/* Hero Section */}
-      <section className="text-center py-20 bg-gradient-to-r from-[#03045E] to-[#023E8A] rounded-lg mt-8 text-[#CAF0F8]">
+      <section className="text-center py-20 bg-[#FCFBFF] rounded-lg mt-8 text-[#051650]">
         <h1 className="text-4xl font-bold mb-4">Welcome to Disaster Insights</h1>
         <p className="text-xl mb-8 max-w-2xl mx-auto">
           A platform to share insights and challenges during disasters and request necessary resources.
@@ -32,10 +32,10 @@ const Home = () => {
 
       {/* News Section */}
       <section className="mt-16">
-        <h2 className="text-3xl font-bold text-center text-[#023E8A] mb-12">Latest Updates</h2>
+        <h2 className="text-3xl font-bold text-center text-[#FCFBFF] mb-12">Latest Updates</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <NewsCard 
-            className="bg-[#90E0EF] shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow" 
+            className="bg-[#20818e] shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow" 
             title="Recent Earthquake Impact" 
             description="Latest updates on the earthquake impact and recovery efforts in affected regions."
           />
