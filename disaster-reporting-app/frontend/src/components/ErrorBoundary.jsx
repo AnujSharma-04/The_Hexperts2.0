@@ -7,10 +7,12 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
+    // Update state to show fallback UI
     return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
+    // Log the error for debugging purposes or send it to an external service
     console.error('Error caught by boundary:', error, errorInfo);
   }
 
@@ -18,10 +20,11 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="text-center p-8">
-          <h2 className="text-2xl font-bold text-red-600">Something went wrong</h2>
-          <button 
+          <h2 className="text-2xl font-bold text-red-600">Something went wrong.</h2>
+          <p className="mt-2 text-gray-600">We're sorry for the inconvenience. Please try refreshing the page.</p>
+          <button
             onClick={() => window.location.reload()}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
           >
             Refresh Page
           </button>

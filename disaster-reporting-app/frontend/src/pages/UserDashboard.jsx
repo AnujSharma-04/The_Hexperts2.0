@@ -1,20 +1,14 @@
+// UserDashboard.jsx
 import React, { useState, useEffect } from "react";
+import { getUserInfo } from "../utils/decode";  // Import the helper function
+import LogoutButton from "../components/logout";  // Import LogOutButton
 
 const UserDashboard = () => {
-  // Dummy User Data (Can be replaced with API call)
-  const user = {
-    name: "Anuj Sharma",
-    email: "anujsharma@example.com",
-  };
-
-  // Dynamic Greeting
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 18) return "Good Afternoon";
-    return "Good Evening";
-  };
-
+  const [userInfo, setUserInfo] = useState(null);  // Store the user info (name, role, etc.)
+  const [selectedDistrict, setSelectedDistrict] = useState("PDEU District Zone 1");
+  const [disasters, setDisasters] = useState([]);
+  const [reportedDisasters, setReportedDisasters] = useState([]);
+  
   // Dummy Data for Districts and Disasters
   const districts = {
     "PDEU District Zone 1": ["Flood", "Earthquake", "Fire"],
@@ -22,32 +16,36 @@ const UserDashboard = () => {
     "PDEU District Zone 3": ["Tornado", "Thunderstorm", "Gas Leak"],
   };
 
-  const [selectedDistrict, setSelectedDistrict] = useState("PDEU District Zone 1");
-  const [disasters, setDisasters] = useState(districts[selectedDistrict]);
-
-  // Dummy Data for User Requests
-  const [requests, setRequests] = useState([
-    { id: 1, disaster: "Flood", status: "Pending", raisedOn: "2025-01-20" },
-    { id: 2, disaster: "Earthquake", status: "Resolved", raisedOn: "2025-01-18" },
-  ]);
-
-  // Dummy Data for Notifications
-  const [notifications, setNotifications] = useState([
-    "New safety guidelines issued for flood management.",
-    "Emergency earthquake drill scheduled for Feb 5.",
-  ]);
-
   // Update Disasters when District Changes
   useEffect(() => {
     setDisasters(districts[selectedDistrict]);
   }, [selectedDistrict]);
 
+  // Fetch user info from JWT token
+  useEffect(() => {
+    const userData = getUserInfo();
+    setUserInfo(userData);
+  }, []);
+
+  // Handle Reporting Disaster
+  const handleReportDisaster = () => {
+    // Logic for reporting a disaster
+  };
+
+  // Handle Activity Section (Reported, Approved, Rejected)
+  const handleActivitySection = () => {
+    // Logic to display user's activity (reported, approved, rejected disasters)
+  };
+
   return (
     <div className="container mx-auto px-6 py-10 text-[#051650]">
-      {/* Greeting Section */}
+      {/* Greeting */}
       <h1 className="text-4xl font-bold text-center mb-6">
-        {getGreeting()}, {user.name} 👋
+        Good Morning, {userInfo ? userInfo.name : "User"} 👋
       </h1>
+
+      {/* Add Log Out Button */}
+      <LogoutButton />
 
       {/* District Selection */}
       <div className="bg-[#ADE8F4] p-6 rounded-lg shadow-md mb-6">
@@ -75,29 +73,34 @@ const UserDashboard = () => {
         </ul>
       </div>
 
-      {/* User Requests */}
-      <div className="bg-[#CAF0F8] p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-2xl font-semibold mb-4">Your Disaster Requests</h2>
-        <ul>
-          {requests.map((req) => (
-            <li key={req.id} className="border-b py-2 flex justify-between">
-              <span>
-                <strong>{req.disaster}:</strong> {req.status}
-              </span>
-              <span className="text-sm text-gray-600">Raised on {req.raisedOn}</span>
-            </li>
-          ))}
-        </ul>
+      {/* Activity Section */}
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 className="text-2xl font-semibold mb-4">Your Activity</h2>
+        <button 
+          onClick={handleActivitySection} 
+          className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+          View Activity
+        </button>
+
+        <div className="mt-4">
+          <h3 className="font-semibold">Reported Disasters</h3>
+          <ul>
+            {reportedDisasters.map((disaster, index) => (
+              <li key={index} className="border-b py-2">{disaster}</li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      {/* Notifications */}
-      <div className="bg-[#20818e] p-6 rounded-lg shadow-md text-white">
-        <h2 className="text-2xl font-semibold mb-4">District Notifications</h2>
-        <ul>
-          {notifications.map((note, index) => (
-            <li key={index} className="border-b py-2">{note}</li>
-          ))}
-        </ul>
+      {/* Button to Report Disaster */}
+      <div className="mt-6">
+        <button 
+          onClick={handleReportDisaster} 
+          className="bg-green-500 text-white px-4 py-2 rounded-md"
+        >
+          Report Disaster
+        </button>
       </div>
     </div>
   );

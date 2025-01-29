@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 # Initialize extensions
 db = SQLAlchemy()
@@ -11,6 +12,8 @@ jwt = JWTManager()
 
 def create_app(config_object='app.config.Config'):
     app = Flask(__name__)
+
+    CORS(app, resources={r"/*": {"origins": "http://localhost:4173"}})
     
     # Load configuration
     app.config.from_object(config_object)

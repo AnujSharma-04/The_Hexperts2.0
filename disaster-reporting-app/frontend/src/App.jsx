@@ -1,3 +1,4 @@
+// src/App.js
 import { Routes, Route } from "react-router-dom";
 import AuthorityDashboard from "./pages/AuthorityDashboard";
 import AuthorityProfile from "./pages/AuthorityProfile";
@@ -10,10 +11,12 @@ import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ErrorBoundary from "./components/ErrorBoundary";
+import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute for protected routes
+import Register from "./pages/register"; 
 
 function App() {
   return (
-    <ErrorBoundary>
+    // <ErrorBoundary>
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
@@ -23,14 +26,15 @@ function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/authoritydashboard" element={<AuthorityDashboard />} />
-            <Route path="/authorityprofile" element={<AuthorityProfile />} />
-            <Route path="/userdashboard" element={<UserDashboard />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/authoritydashboard" element={<PrivateRoute element={AuthorityDashboard} />} /> {/* Protected route */}
+            <Route path="/authorityprofile" element={<PrivateRoute element={AuthorityProfile} />} /> {/* Protected route */}
+            <Route path="/userdashboard" element={<PrivateRoute element={UserDashboard} />} /> {/* Protected route */}
           </Routes>
         </main>
         <Footer />
       </div>
-    </ErrorBoundary>
+    // </ErrorBoundary>
   );
 }
 

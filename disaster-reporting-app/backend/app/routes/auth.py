@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from ..models.user import User
 from app.app__init__ import db  # Use the new module name
 from flask_jwt_extended import create_access_token
+from flask_cors import cross_origin
 
 # Define the blueprint
 auth_bp = Blueprint('auth', __name__, url_prefix='/api')
@@ -50,6 +51,7 @@ def register():
 
 
 @auth_bp.route('/login', methods=['POST'])
+@cross_origin(origin='http://localhost:4173')
 def login():
     # Get email and password from request
     data = request.get_json()
@@ -68,7 +70,8 @@ def login():
         return jsonify({"message": "Invalid credentials!"}), 401
 
     # If login is successful, generate a JWT token
-    access_token = create_access_token(identity=str(user.id))
+    access_token = create_access_token(identity=str(user.id), additional_claims={"role": user.role,"name": user.name})
+
 
     # Return the token to the user
     return jsonify({"access_token": access_token}), 200
