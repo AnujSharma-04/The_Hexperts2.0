@@ -1,20 +1,19 @@
 import { useEffect, useState, useRef } from "react";
 import NewsCard from "../components/NewsCard";
 import Chart from "chart.js/auto";
-import { getDisasterNews } from "../apiService"; // Importing the API service to fetch news
+import { getDisasterNews } from "../apiService";
 
 const Insights = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [visibleArticles, setVisibleArticles] = useState(3); // To control the number of visible articles
 
-  // Chart references
   const disasterChartRef = useRef(null);
   const severityChartRef = useRef(null);
   const monthlyChartRef = useRef(null);
   const statusChartRef = useRef(null);
 
-  // Dummy Data
   const dummyData = {
     disasterTypes: { labels: ["Flood", "Earthquake", "Fire", "Landslide", "Storm"], data: [30, 15, 25, 10, 20] },
     severityLevels: { labels: ["Low", "Medium", "High"], data: [20, 45, 35] },
@@ -22,13 +21,12 @@ const Insights = () => {
     statusDistribution: { labels: ["Submitted", "Approved", "Rejected", "Merged"], data: [40, 30, 20, 10] },
   };
 
-  // Fetch Disaster News when the component mounts
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const fetchedArticles = await getDisasterNews(); // Fetch disaster news using the API
+        const fetchedArticles = await getDisasterNews();
         setArticles(fetchedArticles);
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       } catch (err) {
         setError("Failed to fetch disaster news");
         setLoading(false);
@@ -36,10 +34,9 @@ const Insights = () => {
     };
 
     fetchNews();
-    
+
     if (!disasterChartRef.current || !severityChartRef.current || !monthlyChartRef.current || !statusChartRef.current) return;
 
-    // Create charts
     new Chart(disasterChartRef.current, {
       type: "bar",
       data: { labels: dummyData.disasterTypes.labels, datasets: [{ label: "Reports", data: dummyData.disasterTypes.data, backgroundColor: "rgba(54, 162, 235, 0.8)" }] },
@@ -65,19 +62,45 @@ const Insights = () => {
     });
   }, []);
 
+  // Handle "More News" button click
+  const loadMoreNews = () => {
+    setVisibleArticles((prev) => prev + 3); // Show 3 more articles
+  };
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center mb-6">Disaster News & Analytics</h1>
+      <h1 className="text-3xl font-bold text-center mb-6 text-cyan-50">Disaster News & Analytics</h1>
 
       {loading && <p className="text-center text-gray-500">Loading...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* News Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {articles.map((article, index) => (
-          <NewsCard key={index} title={article.title || "No title available"} description={article.description || "No description available"} url={article.url || "#"} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {articles.slice(0, visibleArticles).map((article, index) => (
+          <div
+            key={index}
+            className="flex flex-col bg-blue-900 text-black rounded-lg p-4 shadow-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300 ease-in-out"
+            style={{ minHeight: "100px" }} // Ensuring uniform height
+          >
+            <NewsCard
+              title={article.title || "No title available"}
+              description={article.description || "No description available"}
+              url={article.url || "#"}
+            />
+          </div>
         ))}
       </div>
+
+      {visibleArticles < articles.length && (
+        <div className="text-center mt-6">
+          <button
+            onClick={loadMoreNews}
+            className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
+          >
+            More News
+          </button>
+        </div>
+      )}
 
       {/* Analytics Section */}
       <h2 className="text-2xl font-semibold text-center mt-10">Disaster Analytics</h2>
