@@ -5,6 +5,8 @@ from app.app__init__ import db  # Use the new module name
 from app.models.disaster import Disaster
 from ..models.user import User
 from ..models.notification import Notification  # Import Notification model
+import os
+from werkzeug.utils import secure_filename
 
 
 
@@ -12,25 +14,30 @@ from ..models.notification import Notification  # Import Notification model
 disaster_bp = Blueprint('disaster', __name__,url_prefix='/api')
 
 
-@disaster_bp.route('disaster/report', methods=['POST'])
-@jwt_required()  # Ensure the user is authenticated
+
+@disaster_bp.route('/disaster/report', methods=['POST'])
+@jwt_required()  # Ensure user is authenticated
 def report_disaster():
     # Get the current user's ID from the JWT token
     current_user_id = get_jwt_identity()
 
-    # Get data from the request payload
+    # Get form data instead of JSON
     data = request.get_json()
     disaster_type = data.get('disaster_type')
     description = data.get('description')
     severity_level = data.get('severity_level')
     location = data.get('location')
-    proof_url = data.get('proof_url')
-    status = data.get('status', 'submitted')  # Default status to 'submitted'
     district = data.get('district')
+    casualties = int(data.get('casualties', 0))
+    injuries = int(data.get('injuries', 0))
+    proof_url = data.get('proof_url')
+    missing_persons = int(data.get('missing_persons', 0))
 
-    # Validate the data (ensure required fields are provided)
+    # Validate required fields
     if not disaster_type or not description or not severity_level or not location:
         return jsonify({"message": "Missing required fields!"}), 400
+
+
 
     # Create a new Disaster report
     new_disaster = Disaster(
@@ -39,12 +46,15 @@ def report_disaster():
         description=description,
         severity_level=severity_level,
         location=location,
-        proof_url=proof_url,
-        status=status,
-        district=district
+        proof_url=proof_url,  # Save the uploaded file path
+        status='submitted',
+        district=district,
+        casualties=casualties,
+        injuries=injuries,
+        missing_persons=missing_persons
     )
 
-    # Add the disaster report to the database
+    # Save to database
     db.session.add(new_disaster)
     db.session.commit()
 
@@ -52,12 +62,13 @@ def report_disaster():
     new_notification = Notification(
         user_id=current_user_id,
         message=f"New disaster report submitted: {disaster_type}",
-        is_read=False  # Set status to "unread"
+        is_read=False
     )
     db.session.add(new_notification)
     db.session.commit()
 
     return jsonify({"message": "Disaster report submitted successfully!", "disaster_id": new_disaster.id}), 201
+
 
 @disaster_bp.route('disaster/getlist', methods=['GET'])
 @jwt_required()  # Ensure the user is authenticated

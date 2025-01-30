@@ -10,6 +10,7 @@ db = SQLAlchemy()
 # migrate = Migrate(compare_type=True)
 jwt = JWTManager()
 
+
 def create_app(config_object='app.config.Config'):
     app = Flask(__name__)
 

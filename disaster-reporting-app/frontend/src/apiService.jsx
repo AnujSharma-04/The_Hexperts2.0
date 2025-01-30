@@ -50,11 +50,13 @@ export const register = (name, email, phone, district, password) => {
 };
 
 export const getNotifications = () => {
-  return api.get('/notifications');
+  return api.get('/notification/get');
 };
 
 export const reportDisaster = (disasterData) => {
-  return api.post('/disasters/report', disasterData);
+  return api.post('/disaster/report', disasterData);  // ✅ Use `api.post` so JWT is included
 };
+
+// Other API calls can go here
 
 export default api;
