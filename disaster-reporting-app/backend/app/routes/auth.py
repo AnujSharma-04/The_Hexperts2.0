@@ -70,7 +70,7 @@ def login():
         return jsonify({"message": "Invalid credentials!"}), 401
 
     # If login is successful, generate a JWT token
-    access_token = create_access_token(identity=str(user.id), additional_claims={"role": user.role,"name": user.name})
+    access_token = create_access_token(identity=str(user.id), additional_claims={"role": user.role,"name": user.name,"district": user.district})
 
 
     # Return the token to the user
