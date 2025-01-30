@@ -11,6 +11,7 @@ const Insights = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState("Ahmedabad"); // Default selected district
+  const [visibleArticles, setVisibleArticles] = useState(3); // To control the number of visible articles
 
   // Chart references
   const disasterChartRef = useRef(null);
@@ -18,7 +19,6 @@ const Insights = () => {
   const monthlyChartRef = useRef(null);
   const statusChartRef = useRef(null);
 
-  // Add refs for chart instances
   const chartInstances = useRef({});
 
   // Fetch Disaster News when the component mounts
@@ -131,31 +131,57 @@ const Insights = () => {
     };
   }, [selectedDistrict]);
 
+  // Handle "More News" button click
+  const loadMoreNews = () => {
+    setVisibleArticles((prev) => prev + 3); // Show 3 more articles
+  };
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center mb-6">Disaster News & Analytics</h1>
+      <h1 className="text-3xl font-bold text-center mb-6 text-cyan-50">Disaster News & Analytics</h1>
 
       {loading && <p className="text-center text-gray-500">Loading...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* News Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {articles.map((article, index) => (
-          <NewsCard key={index} title={article.title || "No title available"} description={article.description || "No description available"} url={article.url || "#"} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {articles.slice(0, visibleArticles).map((article, index) => (
+          <div
+            key={index}
+            className="flex flex-col bg-blue-900 text-black rounded-lg p-4 shadow-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300 ease-in-out"
+            style={{ minHeight: "100px" }} // Ensuring uniform height
+          >
+            <NewsCard
+              title={article.title || "No title available"}
+              description={article.description || "No description available"}
+              url={article.url || "#"}
+            />
+          </div>
         ))}
       </div>
 
+      {visibleArticles < articles.length && (
+        <div className="text-center mt-6">
+          <button
+            onClick={loadMoreNews}
+            className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
+          >
+            More News
+          </button>
+        </div>
+      )}
+
       {/* District Selection Dropdown */}
       <div className="mt-6 text-center">
-        <h2 className="text-xl font-semibold">Select District</h2>
+        <h2 className="text-xl text-white font-semibold">Select District</h2>
         <select
-          className="mt-2 p-2 border border-gray-300 rounded"
+          className="mt-2 p-2 border text-white border-gray-300 rounded"
           value={selectedDistrict}
           onChange={(e) => setSelectedDistrict(e.target.value)}
         >
-          <option value="Ahmedabad">Ahmedabad</option>
-          <option value="Surat">Surat</option>
-          <option value="Vadodara">Vadodara</option>
+          <option value="Ahmedabad" className="text-white">Ahmedabad</option>
+          <option value="Surat" className="text-white">Surat</option>
+          <option value="Vadodara" className="text-white">Vadodara</option>
         </select>
       </div>
 
