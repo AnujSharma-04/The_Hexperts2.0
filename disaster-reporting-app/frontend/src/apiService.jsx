@@ -42,7 +42,30 @@ export const getDisasterNews = async (query = 'disaster OR calamity') => {
 };
 
 export const login = (email, password) => {
-  return api.post('/login', { email, password });
+  return api.post('/login', { email, password }, { withCredentials: true });
+};
+
+// Alternative login implementation using fetch
+export const loginWithFetch = async (email, password) => {
+  try {
+    const response = await fetch('http://127.0.0.1:5001/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ email, password })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error during login:', error);
+    throw error;
+  }
 };
 
 export const register = (name, email, phone, district, password) => {
