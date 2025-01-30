@@ -14,6 +14,9 @@ import PrivateRoute from "./PrivateRoute"; // Import PrivateRoute for protected 
 import Register from "./pages/register";
 import ReportDisaster from "./pages/reportdisaster"; // Import the missing page
 import UserActivity from "./pages/useractivity";
+import SubmittedReports from "./pages/submittedreports";
+import Logs from "./pages/logs";
+import ApprovedDisasters from "./pages/approvedreports";
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
           <Route path="/userdashboard" element={<PrivateRoute element={UserDashboard} />} /> 
           <Route path="/reportdisaster" element={<PrivateRoute element={ReportDisaster} />} /> {/* Protected route */}
           <Route path="/useractivity" element={<UserActivity />} />
+          <Route path="/submittedreports" element={<SubmittedReports />} />
+          <Route path="/logs" element={<Logs />} />
+          <Route path="/approved-disasters/:district" element={<ApprovedDisasters />} />
         </Routes>
       </main>
       <Footer />

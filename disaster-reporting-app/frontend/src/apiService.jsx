@@ -81,6 +81,8 @@ export const reportDisaster = (disasterData) => {
   return api.post('/disaster/report', disasterData);  // ✅ Use `api.post` so JWT is included
 };
 
+
+
 // Other API calls can go here
 
 export default api;

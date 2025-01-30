@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import { getUserInfo } from "../utils/decode";
 import LogoutButton from "../components/logout";
 
+const gujaratDistricts = [
+  "Ahmedabad", "Amreli", "Anand", "Aravalli", "Banaskantha", "Bharuch", "Bhavnagar",
+  "Botad", "Chhota Udaipur", "Dahod", "Dang", "Devbhoomi Dwarka", "Gandhinagar",
+  "Gir Somnath", "Jamnagar", "Junagadh", "Kheda", "Kutch", "Mahisagar", "Mehsana",
+  "Morbi", "Narmada", "Navsari", "Panchmahal", "Patan", "Porbandar", "Rajkot",
+  "Sabarkantha", "Surat", "Surendranagar", "Tapi", "Vadodara", "Valsad"
+];
+
 const UserDashboard = () => {
   const [userInfo, setUserInfo] = useState(null);
-  const [selectedDistrict, setSelectedDistrict] = useState("PDEU District Zone 1");
-  const [disasters, setDisasters] = useState([]);
-  const [reportedDisasters, setReportedDisasters] = useState([]);
-
-  const navigate = useNavigate(); // Initialize navigation function
-
-  const districts = {
-    "PDEU District Zone 1": ["Flood", "Earthquake", "Fire"],
-    "PDEU District Zone 2": ["Cyclone", "Landslide", "Drought"],
-    "PDEU District Zone 3": ["Tornado", "Thunderstorm", "Gas Leak"],
-  };
-
-  useEffect(() => {
-    setDisasters(districts[selectedDistrict]);
-  }, [selectedDistrict]);
+  const [selectedDistrict, setSelectedDistrict] = useState("Amreli"); // Default district
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const userData = getUserInfo();
@@ -35,36 +30,44 @@ const UserDashboard = () => {
       <LogoutButton />
 
       <div className="bg-[#ADE8F4] p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-2xl font-semibold mb-4">Select Your District</h2>
+        <h2 className="text-2xl font-semibold mb-4">Select or Enter Your District</h2>
         <select
-          className="w-full p-3 rounded-lg border border-gray-300"
+          className="w-full p-3 rounded-lg border border-gray-300 mb-3"
           value={selectedDistrict}
           onChange={(e) => setSelectedDistrict(e.target.value)}
         >
-          {Object.keys(districts).map((district, index) => (
+          {gujaratDistricts.map((district, index) => (
             <option key={index} value={district}>
               {district}
             </option>
           ))}
         </select>
+        <input
+          type="text"
+          className="w-full p-3 rounded-lg border border-gray-300"
+          value={selectedDistrict}
+          onChange={(e) => setSelectedDistrict(e.target.value)}
+          placeholder="Enter your district"
+        />
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-2xl font-semibold mb-4">Disasters in {selectedDistrict}</h2>
-        <ul>
-          {disasters.map((disaster, index) => (
-            <li key={index} className="border-b py-2">{disaster}</li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-        <h2 className="text-2xl font-semibold mb-4">Your Activity</h2>
+        <h2 className="text-2xl font-semibold mb-4">Approved Disasters in {selectedDistrict}</h2>
         <button 
-          onClick={() => navigate("/useractivity")} 
+          onClick={() => navigate(`/approved-disasters/${selectedDistrict}`)} 
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
         >
-          View Activity
+          View Approved Disasters
+        </button>
+      </div>
+
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 className="text-2xl font-semibold mb-4">User Activity</h2>
+        <button 
+          onClick={() => navigate("/useractivity")} 
+          className="bg-purple-500 text-white px-4 py-2 rounded-md"
+        >
+          View User Activity
         </button>
       </div>
 
