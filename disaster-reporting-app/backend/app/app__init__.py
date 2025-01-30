@@ -1,13 +1,13 @@
 # app/app_init.py
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+# from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 # Initialize extensions
 db = SQLAlchemy()
-migrate = Migrate(compare_type=True)
+# migrate = Migrate(compare_type=True)
 jwt = JWTManager()
 
 def create_app(config_object='app.config.Config'):
@@ -20,7 +20,7 @@ def create_app(config_object='app.config.Config'):
     
     # Initialize extensions
     db.init_app(app)
-    migrate.init_app(app, db)
+    # migrate.init_app(app, db)
     jwt.init_app(app)
 
     # Register blueprints

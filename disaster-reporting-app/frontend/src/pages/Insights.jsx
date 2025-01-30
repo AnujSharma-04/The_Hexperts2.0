@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import NewsCard from "../components/NewsCard";
 import Chart from "chart.js/auto";
+import { getDisasterNews } from "../apiService"; // Importing the API service to fetch news
 
 const Insights = () => {
   const [articles, setArticles] = useState([]);
@@ -21,25 +22,21 @@ const Insights = () => {
     statusDistribution: { labels: ["Submitted", "Approved", "Rejected", "Merged"], data: [40, 30, 20, 10] },
   };
 
-  // Fetch Disaster News
+  // Fetch Disaster News when the component mounts
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch(`https://newsapi.org/v2/everything?q=disaster&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`);
-        if (!response.ok) throw new Error("Failed to fetch news");
-        const data = await response.json();
-        setArticles(data.articles || []);
+        const fetchedArticles = await getDisasterNews(); // Fetch disaster news using the API
+        setArticles(fetchedArticles);
+        setLoading(false); // Set loading to false after fetching
       } catch (err) {
-        setError(err.message);
-      } finally {
+        setError("Failed to fetch disaster news");
         setLoading(false);
       }
     };
-    fetchNews();
-  }, []);
 
-  // Initialize Charts
-  useEffect(() => {
+    fetchNews();
+    
     if (!disasterChartRef.current || !severityChartRef.current || !monthlyChartRef.current || !statusChartRef.current) return;
 
     // Create charts

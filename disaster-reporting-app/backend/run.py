@@ -1,4 +1,4 @@
-from app.app__init__ import create_app, db  # Import from the new file name
+from app.app__init__ import create_app, db # Import from the new file name
 from app.models.user import User
 from app.models.disaster import Disaster
 from app.models.log import Log
