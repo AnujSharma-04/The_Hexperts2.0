@@ -12,6 +12,7 @@ const Insights = () => {
   const [error, setError] = useState(null);
   const [selectedDistrict, setSelectedDistrict] = useState("Ahmedabad"); // Default selected district
 
+  // Chart references
   const disasterChartRef = useRef(null);
   const severityChartRef = useRef(null);
   const monthlyChartRef = useRef(null);
@@ -20,12 +21,13 @@ const Insights = () => {
   // Add refs for chart instances
   const chartInstances = useRef({});
 
+  // Fetch Disaster News when the component mounts
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const fetchedArticles = await getDisasterNews();
+        const fetchedArticles = await getDisasterNews(); // Fetch disaster news using the API
         setArticles(fetchedArticles);
-        setLoading(false);
+        setLoading(false); // Set loading to false after fetching
       } catch (err) {
         setError("Failed to fetch disaster news");
         setLoading(false);
@@ -120,31 +122,47 @@ const Insights = () => {
         responsive: true,
       },
     });
-  }, []);
+
+    // Cleanup function
+    return () => {
+      Object.values(chartInstances.current).forEach(chart => {
+        if (chart) chart.destroy();
+      });
+    };
+  }, [selectedDistrict]);
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center mb-6 text-cyan-50">Disaster News & Analytics</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">Disaster News & Analytics</h1>
 
       {loading && <p className="text-center text-gray-500">Loading...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
       {/* News Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {articles.slice(0, visibleArticles).map((article, index) => (
-          <div
-            key={index}
-            className="flex flex-col bg-blue-900 text-black rounded-lg p-4 shadow-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300 ease-in-out"
-            style={{ minHeight: "100px" }} // Ensuring uniform height
-          >
-            <NewsCard
-              title={article.title || "No title available"}
-              description={article.description || "No description available"}
-              url={article.url || "#"}
-            />
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {articles.map((article, index) => (
+          <NewsCard key={index} title={article.title || "No title available"} description={article.description || "No description available"} url={article.url || "#"} />
         ))}
       </div>
+
+      {/* District Selection Dropdown */}
+      <div className="mt-6 text-center">
+        <h2 className="text-xl font-semibold">Select District</h2>
+        <select
+          className="mt-2 p-2 border border-gray-300 rounded"
+          value={selectedDistrict}
+          onChange={(e) => setSelectedDistrict(e.target.value)}
+        >
+          <option value="Ahmedabad">Ahmedabad</option>
+          <option value="Surat">Surat</option>
+          <option value="Vadodara">Vadodara</option>
+        </select>
+      </div>
+
+      {/* District Heading - Changed text color to white */}
+      <h2 className="text-2xl font-semibold text-center mt-10 text-white">
+        {selectedDistrict} - Disaster Analytics
+      </h2>
 
       {/* Analytics Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
