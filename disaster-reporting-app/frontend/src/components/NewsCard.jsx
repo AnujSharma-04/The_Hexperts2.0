@@ -1,21 +1,25 @@
-const NewsCard = ({ title, description, url, className = "" }) => {
+import React from "react";
+
+const NewsCard = ({ title, description, url, bgColor }) => {
   return (
-    <div className={`p-6 bg-light-cyan bg-opacity-50 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ${className}`}>
-      <h3 className="text-xl font-bold mb-3 text-federal">{title}</h3>
-      <p className="text-marian mb-4">{description}</p>
-      {url && (
-        <a 
-          href={url} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="inline-block text-honolulu hover:text-pacific font-medium transition-colors duration-200"
-        >
-          Read More →
-        </a>
-      )}
+    <div
+      className="p-6 text-white rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300  "
+      style={{
+        background: `linear-gradient(135deg, ${bgColor} 30%, #105469 100%)`,
+      }}
+    >
+      <h3 className="text-2xl font-bold mb-3">{title}</h3>
+      <p className="text-lg mb-5 opacity-90">{description}</p>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block bg-white text-[#0077B6] font-semibold px-6 py-3 rounded-full hover:bg-[#e3f2fd] transition-all duration-300 shadow-md hover:shadow-lg"
+      >
+        Read Full Article →
+      </a>
     </div>
   );
 };
 
 export default NewsCard;
-  

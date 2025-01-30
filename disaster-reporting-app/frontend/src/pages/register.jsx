@@ -1,23 +1,20 @@
-// src/pages/Register.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../apiService"; // Assuming register API call is in apiService
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [district, setDistrict] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [district, setDistrict] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate(); // Navigate to different pages
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    // Validate that passwords match
     if (password !== confirmPassword) {
       setError("Passwords do not match!");
       return;
@@ -25,113 +22,31 @@ const Register = () => {
 
     try {
       const response = await register(name, email, phone, district, password);
-      console.log(response.data); // You can use this response as needed
-      navigate("/login"); // Redirect to login page after successful registration
+      console.log(response.data);
+      navigate("/login");
     } catch (err) {
-      setError("Registration failed!"); // Show error if registration fails
+      setError("Registration failed!");
     }
   };
 
   return (
-    <div className="container mx-auto max-w-md mt-10 p-6">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-center mb-6">Register</h1>
-        {error && <div className="error text-red-500 text-center">{error}</div>}
-        <form onSubmit={handleRegister} className="space-y-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Name</label>
-            <input
-              id="name"
-              type="text"
-              className="w-full p-3 border rounded-md bg-white text-gray-900"
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <input
-              id="email"
-              type="email"
-              className="w-full p-3 border rounded-md bg-white text-gray-900"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-            <input
-              id="phone"
-              type="text"
-              className="w-full p-3 border rounded-md bg-white text-gray-900"
-              placeholder="Enter your phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="district" className="block text-sm font-medium text-gray-700 mb-2">District</label>
-            <input
-              id="district"
-              type="text"
-              className="w-full p-3 border rounded-md bg-white text-gray-900"
-              placeholder="Enter your district"
-              value={district}
-              onChange={(e) => setDistrict(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-            <input
-              id="password"
-              type="password"
-              className="w-full p-3 border rounded-md bg-white text-gray-900"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              className="w-full p-3 border rounded-md bg-white text-gray-900"
-              placeholder="Confirm your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="w-full bg-gradient-to-r from-[#023E8A] to-[#03045E] text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors">
-            Register
-          </button>
+    
+    
+    <div className="min-h- hover:bg-#646cff flex items-center justify-center px-6 py-10">
+      <div className="w-full max-w-lg bg-white p-8 text-black rounded-lg shadow-lg">
+        <h1 className="text-4xl font-extrabold text-center mb-4">Register</h1>
+        <p className="text-center text-sm text-gray-400 mb-8">Before we start, please create your account</p>
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+        <form onSubmit={handleRegister} className="space-y-4">
+          <input className="w-full p-3 bg-blue-300 text-black border border-white rounded-md placeholder-gray-500" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input className="w-full p-3 bg-blue-300 text-black border border-white rounded-md placeholder-gray-500" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input className="w-full p-3 bg-blue-300 text-black border border-white rounded-md placeholder-gray-500" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+          <input className="w-full p-3 bg-blue-300 text-black border border-white rounded-md placeholder-gray-500" placeholder="District" value={district} onChange={(e) => setDistrict(e.target.value)} required />
+          <input className="w-full p-3 bg-blue-300 text-black border border-white rounded-md placeholder-gray-500" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input className="w-full p-3 bg-blue-300 text-black border border-white rounded-md placeholder-gray-500" placeholder="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <button className="w-full bg-[#ae7aff] p-3 font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]">Create Account</button>
         </form>
-
-        <div className="text-center mt-4">
-          <p className="text-sm text-gray-600">
-            Already have an account? 
-            <span 
-              onClick={() => navigate('/login')} 
-              className="text-blue-600 cursor-pointer"
-            >
-              Login here
-            </span>
-          </p>
-        </div>
+        <p className="text-center text-sm text-gray-400 mt-6">Already registered? <span className="cursor-pointer font-bold text-black hover:underline">Sign in to your account</span></p>
       </div>
     </div>
   );

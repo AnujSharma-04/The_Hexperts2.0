@@ -31,6 +31,7 @@ export const getDisasterNews = async (query = 'disaster OR calamity') => {
         q: query, // Search for articles related to disaster or calamity
         apiKey: NEWS_API_KEY,
         language: 'en', // Set the language to English
+        // country: 'in',
         sortBy: 'publishedAt', // Sort news by latest published
       },
     });
